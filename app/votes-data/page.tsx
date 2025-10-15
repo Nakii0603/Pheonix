@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface VoteData {
   _id: string;
@@ -143,9 +144,9 @@ export default function VotesDataPage() {
         </div>
 
         <div className="mt-6 text-center">
-          <a href="/" className="text-blue-600 hover:underline">
+          <Link href="/" className="text-blue-600 hover:underline">
             ← Back to Home
-          </a>
+          </Link>
         </div>
       </div>
     </div>

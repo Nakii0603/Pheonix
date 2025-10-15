@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { uploadCostume } from "@/lib/actions";
-import cloudinary from "@/lib/cloudinary";
+import Link from "next/link";
 
 export default function AdminPage() {
   const [images, setImages] = useState<File[]>([]);
@@ -403,7 +403,7 @@ export default function AdminPage() {
                     isDarkMode ? "text-gray-400" : "text-gray-500"
                   }`}
                 >
-                  Please don't close this page while uploading...
+                  Please don&apos;t close this page while uploading...
                 </p>
               </div>
             )}
@@ -488,7 +488,7 @@ export default function AdminPage() {
             }`}
           >
             <div className="flex flex-wrap gap-4 justify-center">
-              <a
+              <Link
                 href="/"
                 className={`px-6 py-2 rounded-lg transition-colors font-medium shadow-sm ${
                   isDarkMode
@@ -497,19 +497,19 @@ export default function AdminPage() {
                 }`}
               >
                 ← Back to Home
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/vote"
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium shadow-sm"
               >
                 View Voting Page
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/winners"
                 className="px-6 py-2 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-colors font-medium shadow-sm"
               >
                 View Winners
-              </a>
+              </Link>
             </div>
           </div>
         </div>

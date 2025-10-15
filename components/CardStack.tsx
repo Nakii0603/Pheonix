@@ -124,7 +124,7 @@ const CardStack: React.FC<CardStackProps> = ({
                 : "text-gray-600"
             }`}
           >
-            You've voted on all costumes.
+            You&apos;ve voted on all costumes.
           </p>
         </div>
       </div>

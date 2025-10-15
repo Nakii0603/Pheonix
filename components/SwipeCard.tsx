@@ -1,12 +1,19 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  animate,
+  PanInfo,
+} from "framer-motion";
+import { Costume } from "../lib/types";
 
 interface SwipeCardProps {
   imageUrl: string;
-  onSwipe: (direction: "left" | "right", cardData: any) => void;
-  cardData: any;
+  onSwipe: (direction: "left" | "right", cardData: Costume) => void;
+  cardData: Costume;
   isTop: boolean;
   zIndex: number;
   isDarkMode?: boolean;
@@ -18,11 +25,9 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
   onSwipe,
   cardData,
   isTop,
-  zIndex,
   isDarkMode = false,
   isHalloweenMode = false,
 }) => {
-  const [isDragging, setIsDragging] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const x = useMotionValue(0);
@@ -57,12 +62,13 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
   }, [imageUrl]);
 
   const handleDragStart = () => {
-    setIsDragging(true);
+    // Drag started
   };
 
-  const handleDragEnd = (event: any, info: any) => {
-    setIsDragging(false);
-
+  const handleDragEnd = (
+    event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
     const velocity = info.velocity.x;
     const offset = info.offset.x;
 
@@ -94,25 +100,6 @@ const SwipeCard: React.FC<SwipeCardProps> = ({
         mass: 0.8,
       });
     }
-  };
-
-  const handleButtonSwipe = (direction: "left" | "right") => {
-    if (!isTop) return;
-
-    const targetX = direction === "right" ? 500 : -500;
-
-    // Animate card off screen with smoother spring
-    animate(x, targetX, {
-      type: "spring",
-      stiffness: 400,
-      damping: 25,
-      mass: 0.8,
-    });
-
-    // Trigger callback after animation
-    setTimeout(() => {
-      onSwipe(direction, cardData);
-    }, 250);
   };
 
   return (

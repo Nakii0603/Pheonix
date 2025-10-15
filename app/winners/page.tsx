@@ -8,7 +8,6 @@ export default function WinnersPage() {
   const [winners, setWinners] = useState<Costume[]>([]);
   const [currentWinner, setCurrentWinner] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
-  const [refreshing, setRefreshing] = useState(false);
   const [voteStats, setVoteStats] = useState({
     totalVotes: 0,
     likeVotes: 0,
@@ -20,9 +19,7 @@ export default function WinnersPage() {
   }, []);
 
   const loadWinners = async (isRefresh = false) => {
-    if (isRefresh) {
-      setRefreshing(true);
-    } else {
+    if (!isRefresh) {
       setLoading(true);
     }
 
@@ -37,7 +34,6 @@ export default function WinnersPage() {
       console.error("Error loading winners:", error);
     } finally {
       setLoading(false);
-      setRefreshing(false);
     }
   };
 

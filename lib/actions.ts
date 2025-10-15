@@ -2,6 +2,7 @@
 
 import clientPromise from "./mongodb";
 import { Costume, Vote } from "./types";
+import { ObjectId } from "mongodb";
 
 export async function uploadCostume(imageUrl: string) {
   try {
@@ -61,7 +62,6 @@ export async function voteOnCostume(
     const db = client.db("costume-voting");
     const costumes = db.collection<Costume>("costumes");
     const votes = db.collection<Vote>("votes");
-    const { ObjectId } = await import("mongodb");
 
     // Check if this device has already voted on this costume
     const existingVote = await votes.findOne({
@@ -87,7 +87,7 @@ export async function voteOnCostume(
     // Update costume stats - convert string ID back to ObjectId for database query
     const updateField = action === "like" ? "likes" : "dislikes";
     await costumes.updateOne(
-      { _id: new ObjectId(imageId) as any },
+      { _id: new ObjectId(imageId) as unknown as string },
       { $inc: { [updateField]: 1 } }
     );
 

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
 import {
-  getCurrentCostume,
   voteOnCostume,
   checkVotingCompletion,
   getAllCostumes,
@@ -50,22 +50,7 @@ export default function VotePage() {
     localStorage.setItem("vote-halloween", isHalloweenMode ? "true" : "false");
   }, [isHalloweenMode]);
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
-
-  const toggleHalloween = () => {
-    setIsHalloweenMode(!isHalloweenMode);
-  };
-
-  useEffect(() => {
-    // Generate device ID on component mount
-    const id = generateDeviceId();
-    setDeviceId(id);
-    loadCostumes();
-  }, []);
-
-  const checkCompletion = async () => {
+  const checkCompletion = useCallback(async () => {
     if (!deviceId) return;
 
     try {
@@ -81,9 +66,9 @@ export default function VotePage() {
     } catch (error) {
       console.error("Error checking completion:", error);
     }
-  };
+  }, [deviceId]);
 
-  const loadCostumes = async () => {
+  const loadCostumes = useCallback(async () => {
     setLoading(true);
     try {
       const allCostumes = await getAllCostumes();
@@ -97,7 +82,14 @@ export default function VotePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [checkCompletion]);
+
+  useEffect(() => {
+    // Generate device ID on component mount
+    const id = generateDeviceId();
+    setDeviceId(id);
+    loadCostumes();
+  }, [loadCostumes]);
 
   const handleSwipe = async (
     direction: "left" | "right",
@@ -233,7 +225,7 @@ export default function VotePage() {
               : "No costumes have been uploaded yet. Check back later!"}
           </p>
           <div className="space-y-4">
-            <a
+            <Link
               href="/admin"
               className={`inline-block py-3 px-8 rounded-full font-semibold transition-colors shadow-lg ${
                 isHalloweenMode
@@ -242,9 +234,9 @@ export default function VotePage() {
               }`}
             >
               {isHalloweenMode ? "🎭 Summon Costumes" : "Upload Costumes"}
-            </a>
+            </Link>
             <div>
-              <a
+              <Link
                 href="/"
                 className={`text-sm ${
                   isHalloweenMode
@@ -255,7 +247,7 @@ export default function VotePage() {
                 } transition-colors`}
               >
                 ← Back to Home
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -321,7 +313,7 @@ export default function VotePage() {
                   : "text-gray-600"
               }`}
             >
-              You've voted on all {votingProgress.total} costumes!
+              You&apos;ve voted on all {votingProgress.total} costumes!
             </p>
             <p
               className={`text-lg mb-12 ${
