@@ -133,7 +133,7 @@ export default function WinnersPage() {
                   className="w-full h-96 object-cover rounded-lg mb-4"
                 />
                 <div className="text-lg font-semibold text-gray-700">
-                  {getWinnerData()!.likes} 👍 {getWinnerData()!.dislikes} 👎
+                  {getWinnerData()!.likes} 👍
                 </div>
               </div>
             ) : (
